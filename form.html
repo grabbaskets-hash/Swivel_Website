@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Swivel IT Internship Application Form</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -47,14 +48,12 @@
 <body>
 
     <div class="container">
-        <!-- Swivel IT Logo -->
-        <img src="./swivel.jpg" alt="Swivel IT Logo" class="company-logo">
-
+        <img src="https://via.placeholder.com/120x60.png?text=Swivel+IT" alt="Swivel IT Logo" class="company-logo">
         <h2>Swivel IT Internship Application Form</h2>
 
         <div class="company-info">
-            <p><strong>Company:</strong> Swivel IT </p>
-            <p><strong>Address:</strong> DLF IT Park , Porur,Chennai</p>
+            <p><strong>Company:</strong> Swivel IT Solutions</p>
+            <p><strong>Address:</strong> 123, Tech Park Road, Bengaluru, Karnataka</p>
             <p><strong>Program Highlights:</strong> Hands-on training, Real-time projects, Mentorship, Certificate</p>
         </div>
 
@@ -147,38 +146,51 @@
                 <input type="tel" class="form-control" name="studentWhatsapp" required>
             </div>
 
-            <!-- Payment Method -->
-            <h5 class="section-title">Payment Method</h5>
-            <div class="mb-3">
-                <select class="form-select" name="paymentMethod" required>
-                    <option value="">-- Select Payment Method --</option>
-                    <option value="Credit Card">Credit Card</option>
-                    <option value="Debit Card">Debit Card</option>
-                    <option value="UPI">UPI</option>
-                    <option value="Net Banking">Net Banking</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Submit Application</button>
+            <button type="submit" class="btn btn-success w-100">Pay & Submit Application</button>
         </form>
     </div>
 
     <script>
-        // Get URL parameters for internship info
+        // Default Swivel IT course info
         const params = new URLSearchParams(window.location.search);
         document.getElementById("courseName").value = params.get("name") || 'Swivel IT Internship Program';
         document.getElementById("domain").value = params.get("domain") || 'IT / Software Development';
         document.getElementById("weeks").value = params.get("weeks") || '8';
-        document.getElementById("fee").value = params.get("fee") || '0';
+        document.getElementById("fee").value = params.get("fee") || '5000'; // example fee
 
-        // Handle form submission
+        // Razorpay payment
+        const razorpayKey = "YOUR_RAZORPAY_KEY_ID"; // Replace with your Razorpay Key ID
+
         document.getElementById("applicationForm").addEventListener("submit", function (e) {
             e.preventDefault();
-            alert("Swivel IT Internship application submitted successfully!");
-            this.reset();
+
+            const fee = parseInt(document.getElementById("fee").value) * 100; // Amount in paise
+
+            const options = {
+                "key": razorpayKey,
+                "amount": fee,
+                "currency": "INR",
+                "name": "Swivel IT Solutions",
+                "description": "Internship Fee",
+                "handler": function (response) {
+                    alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+                    // Here you can also store the applicant details in localStorage or send to backend
+                    document.getElementById("applicationForm").reset();
+                },
+                "prefill": {
+                    "name": this.studentName.value,
+                    "email": this.studentEmail.value,
+                    "contact": this.studentPhone.value
+                },
+                "theme": {
+                    "color": "#6a11cb"
+                }
+            };
+
+            const rzp1 = new Razorpay(options);
+            rzp1.open();
         });
     </script>
-
 </body>
 
-</html>
+</html> 
