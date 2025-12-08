@@ -158,6 +158,13 @@
             padding: 10px;
             border-radius: 50%;
         }
+
+        .btn-warning,
+        .btn-success {
+            font-size: 18px;
+            padding: 10px 25px;
+            border-radius: 6px;
+        }
     </style>
 </head>
 
@@ -185,13 +192,29 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="container">
+        <div class="container text-center">
             <h1>Building Careers, Empowering People</h1>
             <p>Your journey to IT excellence starts here — Learn, Grow, and Succeed with Swivel IT & Training Institute.
             </p>
-            <a href="mailto:admin@swivel.co.in " class="btn btn-primary mt-3 ">Send Your Resume</a>
+
+            <!-- Send Resume Button -->
+            <a href="mailto:admin@swivel.co.in" class="btn btn-primary mt-3">Send Your Resume</a>
+
+            <!-- Current Openings Section -->
+            <div class="mt-4">
+                <h3 class="text-light">🔥 Current Openings</h3>
+                <p class="text-light">We are hiring talented candidates. Choose your category below:</p>
+
+                <!-- Two Buttons -->
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <a href="./openings.html" class="btn btn-warning px-4">Hiring</a>
+                    <a href="./internship.html" class="btn btn-success px-4">Internship Hiring</a>
+                </div>
+            </div>
         </div>
     </section>
+
+
 
     <!-- Services -->
     <section class="services" id="services">
