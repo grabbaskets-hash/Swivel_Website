@@ -36,7 +36,6 @@
             margin-bottom: 30px;
         }
 
-        /* Internship Cards */
         .internship-card {
             border-radius: 15px;
             padding: 25px;
@@ -75,27 +74,36 @@
 
         .apply-btn:hover {
             background: #0d52b6;
-            color: white;
         }
 
-        /* Responsive Cards Layout */
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
             gap: 20px;
+        }
+
+        @media (min-width: 576px) {
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .cards-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         @media (min-width: 992px) {
             .cards-container {
-                grid-template-columns: repeat(5, 1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
-        /* Total Openings Display */
-        #openingDisplay {
-            font-size: 20px;
-            font-weight: 600;
-            color: #1a73e8;
+        @media (min-width: 1200px) {
+            .cards-container {
+                grid-template-columns: repeat(5, 1fr);
+            }
         }
     </style>
 </head>
@@ -174,37 +182,64 @@
             </div>
         </div>
     </div>
+    <br>
 
-    <!-- TOTAL OPENINGS -->
-    <div class="container mt-4 text-center">
-        <div id="openingDisplay"></div>
-    </div>
+    <!-- TOTAL OPENINGS BOX -->
+    <h2 class="opening" id="totalOpenings"></h2>
+    <script>
+        let totalOpenings = 20000; 
+        document.getElementById("totalOpenings").innerHTML = `
+        <div class="openings-box">
+            <span>Total Internship Openings Left</span>
+            <strong>${totalOpenings}</strong>
+        </div>
+    `;
+    </script>
+
+    <style>
+        .openings-box {
+            width: 100%;
+            max-width: 450px;
+            margin: 20px auto;
+            padding: 15px;
+            text-align: center;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            border-radius: 14px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+            letter-spacing: 1px;
+        }
+
+        .openings-box strong {
+            font-size: 26px;
+            font-weight: 700;
+            margin-left: 8px;
+            color: #fff700;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        @media (max-width: 576px) {
+            .openings-box {
+                font-size: 18px;
+                padding: 12px;
+            }
+
+            .openings-box strong {
+                font-size: 22px;
+            }
+        }
+    </style>
 
     <!-- INTERNSHIP OPENINGS -->
     <div class="container mt-5 mb-5">
-        <div class="section-title">Internship Openings</div>
+        <div class="section-title">Internship Programs</div>
         <div class="cards-container" id="internshipContainer"></div>
     </div>
 
     <!-- JS SECTION -->
     <script>
-        // Total Openings
-        let totalOpenings = localStorage.getItem('totalOpenings');
-        if (!totalOpenings) {
-            totalOpenings = 20000;
-            localStorage.setItem('totalOpenings', totalOpenings);
-        } else {
-            totalOpenings = parseInt(totalOpenings);
-        }
-
-        // Display total openings
-        const openingDisplay = document.getElementById("openingDisplay");
-        function updateOpeningsDisplay() {
-            openingDisplay.innerHTML = `<b>Total Openings:</b> ${totalOpenings}`;
-        }
-        updateOpeningsDisplay();
-
-        // Internship Data
         const internships = [
             { name: "PYTHON BASICS", fee: 1, weeks: 1, domain: "Python" },
             { name: "PYTHON (BASICS TO INTERMEDIATE)", fee: 5000, weeks: 2, domain: "Python" },
@@ -242,7 +277,6 @@
 
         const container = document.getElementById("internshipContainer");
 
-        // Render internship cards
         internships.forEach(item => {
             container.innerHTML += `
                 <div class="internship-card">
@@ -250,7 +284,7 @@
                     <p><b>Domain:</b> ${item.domain}</p>
                     <p><b>Fees:</b> ₹${item.fee}</p>
                     <p><b>Duration:</b> ${item.weeks} Weeks</p>
-                    <button class="btn apply-btn w-100 mt-3" ${totalOpenings <= 0 ? 'disabled' : ''}
+                    <button class="btn apply-btn w-100 mt-3"
                         onclick="applyNow('${item.name}', ${item.fee}, ${item.weeks}, '${item.domain}')">
                         Apply Now
                     </button>
@@ -258,18 +292,7 @@
             `;
         });
 
-        // Apply function
         function applyNow(name, fee, weeks, domain) {
-            if (totalOpenings <= 0) {
-                alert("Sorry, no openings left!");
-                return;
-            }
-
-            totalOpenings--;
-            localStorage.setItem('totalOpenings', totalOpenings);
-            updateOpeningsDisplay();
-
-            // Redirect to form page
             const url = `form.html?name=${encodeURIComponent(name)}&fee=${fee}&weeks=${weeks}&domain=${encodeURIComponent(domain)}`;
             window.location.href = url;
         }
